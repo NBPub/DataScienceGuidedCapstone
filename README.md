@@ -1,3 +1,35 @@
+# Note
+
+## Submissions
+
+| Notebook \# | Name, link | Status |
+|---------|-------|----------|
+| 02 | [Data Wrangling](/Notebooks/02_data_wrangling.ipynb) | *submitted* |
+| 03 | [Exploratory Data Analysis](/Notebooks/03_exploratory_data_analysis.ipynb) | *in progress* |
+| 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | -- |
+| 05 | [Modeling](/Notebooks/05_modeling.ipynb) | -- |
+
+## Environment
+
+I have used my base environment for this assignment, instead of the suggest virtual environment, to use more up to date packages. 
+I will note any significant changes on the assignments.
+
+```env
+[packages]
+pandas = "==1.5.3"
+jupyter_client = "==7.4.9"
+jupyter_core = "==5.3.0"
+jupyter_server = "==1.23.4"
+jupyterlab = "==3.5.3"
+jupyterlab_server = "==2.10.2"
+scikit-learn = "==1.2.2"
+matplotlib = "==3.7.1"
+seaborn = "==0.12.2"
+lxml = "==" # not installed, will see if needed
+```
+
+----
+
 # DataScienceGuidedCapstone
 
 Hello students!

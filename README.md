@@ -16,6 +16,7 @@
  - **03 [Exploratory Data Analysis](#03---eda)**
    - [Standard Deviation Calculation, *ddof*](#standard-deviation-calculation-biased-vs-unbiased)
    - [Principal Component Analysis, *with scikit-learn*](#principal-component-analysis-1)
+   - [Data Exploration Plots](#more-eda-plots)
  - **04 [Preprocessing and Training](#04---pre-processing-and-training-data)**
    - [General notes](#process-notes)
    - [Principal Component Analysis, *background notes from lecture series*](#principal-component-analysis-2)
@@ -44,7 +45,7 @@ In other words, the `std()` method default is to assume you want your best estim
  - [wikipedia](https://en.wikipedia.org/wiki/Unbiased_estimation_of_standard_deviation)
  - **Docs:** [NumPy](https://numpy.org/doc/stable/reference/generated/numpy.std.html#numpy.std) | [pandas](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.std.html) | [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.scale.html)
    
-### Principal Component Analysis 1
+#### Principal Component Analysis 1
 
 From [notebook 3.5.3, Visualizing High Dimension Data](/Notebooks/03_exploratory_data_analysis.ipynb). 
 
@@ -60,7 +61,7 @@ The basic steps in this process are:
 - preprocessed data with [scikit-learn](https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing-scaler)
   - **standardize**: center each feature about mean, variance scaled to 1
   - [scikit-learn comparison](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py) of different scalers, transformers, and normalizers
-- [`scale()` documentation](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.scale.html
+- [`scale()` documentation](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.scale.html)
   - **function warning:** In "production" use, don't apply to entire set to avoid data leaking from training to testing. Use `StandardScalar` within a `Pipeline`. `pipe = make_pipeline(StandardScaler(), LogisticRegression())`	
   - in this case, PCA simply being used for EDA, not preprocessing
 
@@ -99,6 +100,17 @@ The basic steps in this process are:
 	  - **NH** and **Ver** relatively high in **PC2**
 	  - **PC2** had relatively high contribution from resorts per population and per area
 	  - both of the small states had relatively large values in those metrics
+
+#### More EDA Plots
+
+![PCA_2](/images/3-5-3-4_PCA1_vs_PCA2.png "First two PCA components plotted against each other") 
+
+![CorrHeatmap](/images/3-5-5-2_Correlation^2_Heatmap.png "Resort Feature correlation heatmap") 
+
+![Feature_v_Price](/images/3-5-5-3_Feature_vs_Price.png "Resort Features vs Ticket Price") 
+
+----
+
 
 ### 04 - Pre-processing and Training Data
 

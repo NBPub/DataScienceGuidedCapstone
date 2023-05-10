@@ -8,7 +8,7 @@
 |---------|-------|----------|
 | 02 | [Data Wrangling](/Notebooks/02_data_wrangling.ipynb) | ✔️ |
 | 03 | [Exploratory Data Analysis](/Notebooks/03_exploratory_data_analysis.ipynb) | ✔️ |
-| 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | *in progress* |
+| 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | *submitted* |
 | 05 | [Modeling](/Notebooks/05_modeling.ipynb) | *in progress* |
 
 ## Useful Tidbits
@@ -252,7 +252,7 @@ The basic steps in this process are:
  - *some new metrics were added, such as a resort's share of terrain parks from its state's total `terrain_park_state_ratio`
  - see [notebook](/Notebooks/03_exploratory_data_analysis.ipynb) for more notes
 
-![CorrHeatmap](/images/3-5-5-2_r^2_Heatmap.png "Resort Feature correlation heatmap") 
+![CorrHeatmap](/images/3-5-5-2_Correlation^2_Heatmap.png "Resort Feature correlation heatmap") 
 
 **Ticket Price vs Resort Features: Distributions**
  - see [notebook](/Notebooks/03_exploratory_data_analysis.ipynb) for more notes
@@ -269,13 +269,12 @@ The basic steps in this process are:
 See also:
 
 - [**Tech with Tim** Machine Learning series](https://www.youtube.com/playlist?list=PLzMcBGfZo4-mP7qA9cagf68V06sko5otr)
-- process notes updated as of getting to **4.8.2** Initial Models - Pipelines
-
-
 
 #### Process Notes
 
 ##### Start
+
+<details><summary>. . . click to expand . . .</summary>
  
  - load cleaned data, extract data for client resort
  - assign 70/30 split to training/testing
@@ -292,9 +291,13 @@ See also:
      - can also use median, specify quantile, or certain values
 	 - can broadcast to array and has `fit()`, `predict()`, and other *scikit-learn* methods avalailable
 
-***See [notes on model metrics](#metrics) below***
+</details>	 
+
+***See [notes on model metrics](#metrics) above***
 
 ##### Initial Models
+
+<details><summary>. . . click to expand . . .</summary>
   
   - missing values can be filled with scikit-learn, i.e. [imputed](https://en.wikipedia.org/wiki/Imputation_(statistics))
      - learn values to impute from the training split, apply them to the test split, then assess imputation
@@ -319,11 +322,15 @@ See also:
 	   - R2: `0.82, 0.72` | MAE: `8.54, 9.42` | MSE: `112.4, 164.4`	   
 	   - basically same results as using median for imputation
      - can define function to perform these steps: impute data, scale features, train model, assess metrics . . .	
+
+</details>	 
 	 
 ##### Pipelines
    
 [`make_pipeline()`](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline) | **[User Guide - Pipelines and composite estimators](https://scikit-learn.org/stable/modules/compose.html#combining-estimators)**
    
+<details><summary>. . . click to expand . . .</summary>
+
    - chain steps of scikit-learn estimators together to create a `Pipeline` object.
      - use to cross-validate a series of steps while setting different parameters
        - intermediate steps must be "transforms", they must implement `fit` and `transform` methods
@@ -344,11 +351,14 @@ See also:
 	   - `PIPE.predict(<test_set_X>)`
 	 - assess performance (R2, MAE, MSE, etc . . .)
 	   - pipeline shows same results as manual process tried above!
-	   
+
+</details>	 	   
 	   
 ##### Model Refinement
 
 [docs](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.feature_selection) | **[User Guide - Feature Selection](https://scikit-learn.org/stable/modules/feature_selection.html#feature-selection)**
+
+<details><summary>. . . click to expand . . .</summary>
   
   - model performance may have suggested overfitting, and features were blindly selected. can features be selected more smartly and can the model be refined?
    - utilize available **sklearn** [feature selection functions](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.feature_selection)
@@ -364,8 +374,11 @@ See also:
 	   - slightly improved
    - should not keep repeating this step, as the training subset of the data has not been updated, and the model should generalize to new data
 
+</details>	 
 
 ##### Assessment via Cross-Validation | [User Guide - Cross-validation: evaluating estimator performance](https://scikit-learn.org/stable/modules/cross_validation.html#multimetric-cross-validation)
+
+<details><summary>. . . click to expand . . .</summary>
    
    - partition training set into `n` folds, then train model on `n-1` folds and calculate performance on the unused training fold
    - cycle through `n` times with a different fold used for performance calculation each time 
@@ -380,9 +393,13 @@ See also:
 	   - returns dictionary with **fit_time**, **score_time**, and **test_score** as keys with arrays of length `cv`
 	     - type of score can be specified, `scoring=<>`, *ex: 'neg_mean_absolute_error'*
 
+</details>	 
+
 ##### Hyperparameter search using GridSearchCV
 
 [docs](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV) | **[User Guide - Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html#)**
+
+<details><summary>. . . click to expand . . .</summary>
 
 **Hyper-parameters** are not directly learnt within estimators, they are passed as arguments to the contructor of estimators. 
 GridSearchCV searches over specified parameter values for an estimator.
@@ -403,6 +420,8 @@ GridSearchCV searches over specified parameter values for an estimator.
 	  - can represent as series with column names as index
 	    - access via `<selected columns>` = `<grid>.best_estimator_.named_steps.selectkbest.get_support()`
 		- `pd.Series(<linear_model_coefficients>, index = <dataset>.columns[<selected_columns>])`
+
+</details>	 
 	
 ![GridSearchCV_1](/images/4-9-8_GridSearchCV.png "Determine best k value for LinearRegression model") 
 ![GridSearchCV_2](/images/4-9-8_ParameterContributions.png "Determine best estimators and their contributions to model") 
@@ -410,7 +429,9 @@ GridSearchCV searches over specified parameter values for an estimator.
 ##### Random Forest Model example
 
 [`sklearn.ensemble.RandomForestRegressor`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn-ensemble-randomforestregressor), **[User Guide - Forest of randomized trees](https://scikit-learn.org/stable/modules/ensemble.html#forest)**
-     
+
+<details><summary>. . . click to expand . . .</summary>
+
    - see [references](https://scikit-learn.org/stable/modules/ensemble.html#b1998) to papers in the user guide
    - ***ensemble methods***, two main families:
      - **averaging:** average independent estimators to reduce variance
@@ -436,16 +457,23 @@ GridSearchCV searches over specified parameter values for an estimator.
    - feature importance to RandomForest model viewed using `<grid>.best_estimator_.named_steps.randomforestregressor.feature_importances_`
      - add feature names using `<dataset>.columns`
 
+</details>	 
+
 ![RandomForest_1](/images/4-10-3_RandomForestModel_feature_importances.png "RandomForest model feature importance") 
    
    
 ##### Model Selection
+
+<details><summary>. . . click to expand . . .</summary>
+
    - use the previously created **GridSearchCV** objects' `best_estimator_`'s to cross_validate models for comparison
      - specify `scoring='neg_mean_absolute_error` for interpretable scores
 	 - "best" **LinearRegression** `10.5 ± 1.6`
 	 - "best" **RandomForest** `9.6 ± 1.3`
    - **RandomForest** model shows lower mean absolute error and less variability than **LinearRegression** model. 
      - Model performance with the testing sets showed similar performance to these cross-validation results.
+
+</details>	 
 
 *metrics provided in `training subset, testing subset` format*
 
@@ -462,6 +490,8 @@ GridSearchCV searches over specified parameter values for an estimator.
 
 [`sklearn.model_selection.learning_curve`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.learning_curve.html#sklearn.model_selection.learning_curve) | **[User Guide - Validation curves: plotting scores to evaluate models](https://scikit-learn.org/stable/modules/learning_curve.html)**
    
+<details><summary>. . . click to expand . . .</summary>
+
  - do I need to ask for more data? is the "usefullness" worth the cost?
  - decompose generalization error of an estimator into
    - **bias** average error for different training sets
@@ -476,9 +506,10 @@ GridSearchCV searches over specified parameter values for an estimator.
  - training set fractions of 0.2 to 1.0 examined with learning curve
    - curve suggests I have sufficient data (193 rows)
    - model improvement diminishes from 40-60 samples and seems to plateau after 70
-	 
-![DataQuantity_1](/images/4-12_Data_quantity_assessment.png "Learning Curve - model improvement with training set size") 
 
+</details>	 
+
+![DataQuantity_1](/images/4-12_Data_quantity_assessment.png "Learning Curve - model improvement with training set size") 
 
 ----
 

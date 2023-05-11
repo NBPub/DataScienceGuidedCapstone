@@ -6,10 +6,12 @@
 
 | Notebook \# | Name, link | Status |
 |---------|-------|----------|
+| 01 | [Problem Statement Worksheet](/Notebooks/01_problem_statement_worksheet.pdf) | ✔️ |
 | 02 | [Data Wrangling](/Notebooks/02_data_wrangling.ipynb) | ✔️ |
 | 03 | [Exploratory Data Analysis](/Notebooks/03_exploratory_data_analysis.ipynb) | ✔️ |
 | 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | *submitted* |
-| 05 | [Modeling](/Notebooks/05_modeling.ipynb) | *in progress* |
+| 05 | [Modeling](/Notebooks/05_modeling.ipynb) | *submitted* |
+| 06 | **Presentation Slides** | *in progress* |
 
 ## Useful Tidbits
 
@@ -515,10 +517,60 @@ GridSearchCV searches over specified parameter values for an estimator.
 
 ### 05 - Modeling
 
-#### Process Notes
 
- - stuff
- - later
+#### Final Model
+
+ - [ski data](/data/ski_data_step3_features.csv), previously [RandomForest](#random-forest-model-example) model loaded
+ - model refit to all data, excluding client resort, **MAE** = **10.4 ± 1.5**
+   - recall `X` refered to attributes that may contribute to price, `AdultWeekend`
+   - `y` refered to what the model was trained to predict, `AdultWeekend` AKA ticket price
+ - then, client resort price was [predicted](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor.predict) using model
+   - `<model>.predict(ski_data.loc[<client_row>, X.columns]).item()`
+     - `predict()` returns numpy array, access value with `.item()`
+
+| Description | Ticket Price ($) |
+|---------|-------|
+| Client's current value |  81.0 |
+| Model's predicted value | 95.9 |
+| Model prediction range | 85.5 - 106.3 |
+
+***Model suggests client can increase price, even within its expected error!*** 
+
+#### Market Context
+
+ - model trained with other resorts' prices, but are they being strategic? **Market Context** will be explored
+   - focus on important [features, determined earlier](#hyperparameter-search-using-gridsearchcv)
+
+<details><summary>. . . Market Context Plots . . .</summary>
+
+*Various feature distributions for the resorts, with the feature vs price regression, if applicable.*
+*Client resort marked on graphs. Lower triangle is current ticket price, and upper is suggested price.*
+
+![MC1](/images/5-8-1_MarketContext-all-prices.png "") 
+![MC2](/images/5-8-1_MarketContext-Montana-prices.png "") 
+![MC3](/images/5-8-2_MarketContext-VerticalDrop.png "") 
+![MC4](/images/5-8-3_MarketContext-SnowMaking.png "") 
+![MC5](/images/5-8-4_MarketContext-Chairs.png "") 
+![MC6](/images/5-8-5_MarketContext-FastQuads.png "") 
+![MC7](/images/5-8-6_MarketContext-TotalRuns.png "") 
+![MC8](/images/5-8-7_MarketContext-LongestRun.png "") 
+![MC9](/images/5-8-8_MarketContext-Trams.png "") 
+![MC10](/images/5-8-9_MarketContext-SkiableArea.png "") 
+
+</details>	
+
+##### Client Scenarios
+
+Model used to evaluate a few propositions from the client, see [notebook 5.9](/Notebooks/05_modeling.ipynb).
+
+ - function defined to
+   - copy client data slice for modification
+   - adjust feature(s) on copied data to match scenario
+     - *ex: increase Chairs by 1 with accompanying Skiable Terrain increase*
+   - predict new price with modified features
+ - then the function was used to evaluate the client scenarios
+   - the amount of expected visitors was provided, and therefore projected revenue changes could be calculated
+   - `visitors` x `ticket_delta`
 
 ## Environment
 

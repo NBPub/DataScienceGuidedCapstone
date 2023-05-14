@@ -9,9 +9,10 @@
 | 01 | [Problem Statement Worksheet](/Notebooks/01_problem_statement_worksheet.pdf) | ✔️ |
 | 02 | [Data Wrangling](/Notebooks/02_data_wrangling.ipynb) | ✔️ |
 | 03 | [Exploratory Data Analysis](/Notebooks/03_exploratory_data_analysis.ipynb) | ✔️ |
-| 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | *submitted* |
+| 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | ✔️ |
 | 05 | [Modeling](/Notebooks/05_modeling.ipynb) | *submitted* |
-| 06 | **Presentation Slides** | *in progress* |
+| 06 | **Presentation Report** | *submitted* |
+| 07 | **Presentation Slides** | *in progress* |
 
 ## Useful Tidbits
 
@@ -282,7 +283,7 @@ See also:
  - assign 70/30 split to training/testing
    - [`sklearn.model_selection.train_test_split()`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split)
    - inputs: data withot price, price data only, split parameters
-   - returns: slices of the source data. train/test set for data without price `X` and set for price `y`.
+   - returns: slices of the source data. train/test set for data without price `X` and only price `y`.
  - extract text features from train/test data, `Name`, `state`, `Region`. Save the resort **Names**, drop the others.
    - only keep numeric data 
  - start by using the **mean** as a predictor, establish conservative baseline for future models
@@ -375,6 +376,7 @@ See also:
 	 - try again with a different specification, `SelectKBest(f_regression, k=15)`
 	   - slightly improved
    - should not keep repeating this step, as the training subset of the data has not been updated, and the model should generalize to new data
+     - *do not overtrain with just the initial split of data, instead utilize cross-validation . . .*
 
 </details>	 
 
@@ -389,11 +391,12 @@ See also:
      - `<results> = model_selection.cross_validate(NEWPIPE, <training_set_X>, <training_set_y>, cv=5)`
 	   - folds (`n` in the bullets above) specified by `cv=`, defaults to 5-fold splitting strategy
 	   - could analyze statistics of returned scores, elucidate uncertainty/variability of model
-	     - see notebook: 3, 5, 10, and 15 fold tried
+	     - [see notebook](/Notebooks/04_preprocessing_and_training.ipynb): 3, 5, 10, and 15 fold tried
 		 - explored more with **GridSearchCV** below
 		   - "best" number of parameters determined to be 8, with a score: `0.68 ± 0.05` , see graph below
 	   - returns dictionary with **fit_time**, **score_time**, and **test_score** as keys with arrays of length `cv`
-	     - type of score can be specified, `scoring=<>`, *ex: 'neg_mean_absolute_error'*
+	     - [scoring method](https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter) can be specified, `scoring=<>`, *ex: 'neg_mean_absolute_error'*
+		 - not sure what default is for this, `r2`? same default used for initial RandomForest refinement [below](#random-forest-model-example)
 
 </details>	 
 
@@ -520,9 +523,9 @@ GridSearchCV searches over specified parameter values for an estimator.
 
 #### Final Model
 
- - [ski data](/data/ski_data_step3_features.csv), previously [RandomForest](#random-forest-model-example) model loaded
+ - [ski data](/data/ski_data_step3_features.csv), previously created [RandomForest](#random-forest-model-example) model loaded
  - model refit to all data, excluding client resort, **MAE** = **10.4 ± 1.5**
-   - recall `X` refered to attributes that may contribute to price, `AdultWeekend`
+   - recall `X` refered to attributes that may contribute to ticket price
    - `y` refered to what the model was trained to predict, `AdultWeekend` AKA ticket price
  - then, client resort price was [predicted](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor.predict) using model
    - `<model>.predict(ski_data.loc[<client_row>, X.columns]).item()`

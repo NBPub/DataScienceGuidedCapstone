@@ -11,8 +11,8 @@
 | 03 | [Exploratory Data Analysis](/Notebooks/03_exploratory_data_analysis.ipynb) | ✔️ |
 | 04 | [Preprocessing and Training](/Notebooks/04_preprocessing_and_training.ipynb) | ✔️ |
 | 05 | [Modeling](/Notebooks/05_modeling.ipynb) | *submitted* |
-| 06 | **Presentation Report** | *submitted* |
-| 07 | **Presentation Slides** | *in progress* |
+| 06 | [Presentation Report](/Notebooks/06_guided_capstone_project_report.pdf) | *submitted* |
+| 07 | [Presentation Slides](/Notebooks/07_guided_capstone_project_slide_deck.pdf) | *submitted* |
 
 ## Useful Tidbits
 
